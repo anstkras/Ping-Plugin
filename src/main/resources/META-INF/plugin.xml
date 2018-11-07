@@ -1,0 +1,16 @@
+<idea-plugin>
+    <id>com.anstkras</id>
+    <name>Ping Plugin</name>
+    <version>0.0.1</version>
+
+    <depends>com.intellij.modules.lang</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+    </extensions>
+
+    <project-components>
+        <component>
+            <implementation-class>ping.PingComponent</implementation-class>
+        </component>
+    </project-components>
+</idea-plugin>
