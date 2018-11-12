@@ -40,7 +40,9 @@ public class PingWidget implements StatusBarWidget {
     }
 
     public void updateIcon(Icon icon) {
-        pingPresentation.setIcon(icon);
-        statusBar.updateWidget(ID());
+        if (pingPresentation.getIcon() != icon) {
+            pingPresentation.setIcon(icon);
+            statusBar.updateWidget(ID());
+        }
     }
 }
