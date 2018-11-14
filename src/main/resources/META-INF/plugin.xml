@@ -6,6 +6,9 @@
     <depends>com.intellij.modules.lang</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <applicationConfigurable groupId="tools" displayName="PingPlugin"
+                                 id="preferences.PingConfigurable"
+                                 instance="configurable.PingConfigurable"/>
     </extensions>
 
     <project-components>
