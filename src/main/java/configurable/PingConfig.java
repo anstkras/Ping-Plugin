@@ -14,9 +14,10 @@ import org.jetbrains.annotations.Nullable;
                 @Storage("PingConfig.xml")}
 )
 public class PingConfig implements PersistentStateComponent<PingConfig> {
-    public String internetAddress;
-    public long fastTime;
-    public long mediumTime;
+    // TODO is this a valid way to set default values?
+    private String internetAddress = "google.com";
+    private long fastTime = 20;
+    private long mediumTime = 40;
 
     @Nullable
     public static PingConfig getInstance(Project project) {
