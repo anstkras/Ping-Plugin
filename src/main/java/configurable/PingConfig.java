@@ -14,9 +14,9 @@ import org.jetbrains.annotations.Nullable;
                 @Storage("PingConfig.xml")}
 )
 public class PingConfig implements PersistentStateComponent<PingConfig> {
-    private String internetAddress;
-    private long fastTime;
-    private long mediumTime;
+    public String internetAddress;
+    public long fastTime;
+    public long mediumTime;
 
     @Nullable
     public static PingConfig getInstance(Project project) {

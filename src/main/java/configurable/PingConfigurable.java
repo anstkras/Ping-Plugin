@@ -2,19 +2,21 @@ package configurable;
 
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;
+import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-/**
- * This ProjectConfigurable class appears on Settings dialog,
- * to let user to configure this plugin's behavior.
- */
 public class PingConfigurable implements SearchableConfigurable {
 
-    PingConfigurableGUI gui;
+    private PingConfigurableGUI gui;
+    private final Project project;
+
+    public PingConfigurable(@NotNull Project project) {
+        this.project = project;
+    }
 
     @Nls
     @Override
@@ -44,22 +46,23 @@ public class PingConfigurable implements SearchableConfigurable {
     @Override
     public JComponent createComponent() {
         gui = new PingConfigurableGUI();
+        gui.createUI(project);
         return gui.getRootPanel();
     }
 
     @Override
     public boolean isModified() {
-        return false;
+        return gui.isModified();
     }
 
     @Override
     public void apply() throws ConfigurationException {
-
+        gui.apply();
     }
 
     @Override
     public void reset() {
-
+        gui.reset();
     }
 
     @Override
