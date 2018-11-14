@@ -14,6 +14,9 @@ import org.jetbrains.annotations.Nullable;
                 @Storage("PingConfig.xml")}
 )
 public class PingConfig implements PersistentStateComponent<PingConfig> {
+    private String internetAddress;
+    private long fastTime;
+    private long mediumTime;
 
     @Nullable
     public static PingConfig getInstance(Project project) {
@@ -29,5 +32,29 @@ public class PingConfig implements PersistentStateComponent<PingConfig> {
     @Override
     public void loadState(PingConfig singleFileExecutionConfig) {
         XmlSerializerUtil.copyBean(singleFileExecutionConfig, this);
+    }
+
+    public String getInternetAddress() {
+        return internetAddress;
+    }
+
+    public void setInternetAddress(String internetAddress) {
+        this.internetAddress = internetAddress;
+    }
+
+    public long getFastTime() {
+        return fastTime;
+    }
+
+    public void setFastTime(long fastTime) {
+        this.fastTime = fastTime;
+    }
+
+    public long getMediumTime() {
+        return mediumTime;
+    }
+
+    public void setMediumTime(long mediumTime) {
+        this.mediumTime = mediumTime;
     }
 }
