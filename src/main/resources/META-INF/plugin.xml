@@ -9,6 +9,7 @@
         <applicationConfigurable groupId="tools" displayName="PingPlugin"
                                  id="preferences.PingConfigurable"
                                  instance="configurable.PingConfigurable"/>
+        <projectService serviceInterface="configurable.PingConfig" serviceImplementation="configurable.PingConfig"/>
     </extensions>
 
     <project-components>
