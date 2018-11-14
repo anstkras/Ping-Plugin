@@ -4,6 +4,7 @@ import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.WindowManager;
+import configurable.PingConfig;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,12 +16,19 @@ public class PingComponent implements ProjectComponent {
     private final Logger logger = Logger.getLogger("ping");
     private PingWidget widget = null;
     private StatusBar statusBar = null;
-    private long fastTime = 20;
-    private long mediumTime = 40;
+    private final PingConfig config;
+    private String internetAddress;
+    private long fastTime;
+    private long mediumTime;
 
     PingComponent(Project project) {
-        this.project = project;
         logger.log(Level.INFO, "start");
+        this.project = project;
+
+        config = PingConfig.getInstance(project);
+        internetAddress = config.getInternetAddress();
+        fastTime = config.getFastTime();
+        mediumTime = config.getMediumTime();
     }
 
     @Override
@@ -58,7 +66,7 @@ public class PingComponent implements ProjectComponent {
             }
         };
 
-        PingExecutor ping = new CommandLinePing(pingListener);
+        PingExecutor ping = new CommandLinePing(internetAddress, pingListener);
         ping.start();
     }
 }

@@ -21,9 +21,11 @@ import java.util.regex.Pattern;
 public class CommandLinePing extends PingExecutor {
     private final Logger logger = Logger.getLogger("ping");
     private final long period = 30; // in seconds
+    private final String internetAddress;
 
-    protected CommandLinePing(PingListener pingListener) {
+    protected CommandLinePing(String internetAddress, PingListener pingListener) {
         super(pingListener);
+        this.internetAddress = internetAddress;
     }
 
     @Override
@@ -31,7 +33,7 @@ public class CommandLinePing extends PingExecutor {
         Runnable runPing = () -> {
             ProcessHandler processHandler = null;
             try {
-                processHandler = new OSProcessHandler(new GeneralCommandLine("ping", "-c", "4", "google.com"));
+                processHandler = new OSProcessHandler(new GeneralCommandLine("ping", "-c", "4", internetAddress));
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
