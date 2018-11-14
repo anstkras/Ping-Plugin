@@ -11,8 +11,8 @@ import javax.swing.*;
 
 public class PingConfigurable implements SearchableConfigurable {
 
-    private PingConfigurableGUI gui;
     private final Project project;
+    private PingConfigurableGUI gui;
 
     public PingConfigurable(@NotNull Project project) {
         this.project = project;

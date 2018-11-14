@@ -56,7 +56,7 @@ public class CommandLinePing extends PingExecutor {
                         Matcher matcher = pattern.matcher(str);
                         if (matcher.find() && matcher.find()) {
                             double time = Double.parseDouble(matcher.group());
-                            logger.log(Level.INFO, String.valueOf(time));
+                            logger.log(Level.INFO, "rtt time: " + String.valueOf(time));
                             if (time <= pingListener.getFastTime()) {
                                 pingListener.onFastTime();
                             } else if (time <= pingListener.getMediumTime()) {
