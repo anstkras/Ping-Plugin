@@ -33,40 +33,40 @@ public class PingComponent implements ProjectComponent {
 
     @Override
     public void projectOpened() {
-        statusBar = WindowManager.getInstance().getStatusBar(project);
-
-        if (statusBar == null) {
-            logger.log(Level.INFO, "status bar is null");
-        } else {
-            widget = new PingWidget(statusBar);
-            statusBar.addWidget(widget);
-            logger.log(Level.INFO, "widget added");
-        }
-
-        PingListener pingListener = new PingListener(fastTime, mediumTime) {
-            @Override
-            public void onError() {
-                widget.updateIcon(RED_ICON);
-                //SwingUtilities.invokeLater(() -> Notifications.Bus.notify(new Notification("ping", "ping", "connection is bad: " + duration + "ms", NotificationType.INFORMATION)));
-            }
-
-            @Override
-            public void onFastTime() {
-                widget.updateIcon(GREEN_ICON);
-            }
-
-            @Override
-            public void onMediumTime() {
-                widget.updateIcon(YELLOW_ICON);
-            }
-
-            @Override
-            public void onSlowTime() {
-                widget.updateIcon(RED_ICON);
-            }
-        };
-
-        PingExecutor ping = new CommandLinePing(internetAddress, pingListener);
-        ping.start();
+//        statusBar = WindowManager.getInstance().getStatusBar(project);
+//
+//        if (statusBar == null) {
+//            logger.log(Level.INFO, "status bar is null");
+//        } else {
+//            widget = new PingWidget(statusBar);
+//            statusBar.addWidget(widget);
+//            logger.log(Level.INFO, "widget added");
+//        }
+//
+//        PingListener pingListener = new PingListener(fastTime, mediumTime) {
+//            @Override
+//            public void onError() {
+//                widget.updateIcon(RED_ICON);
+//                //SwingUtilities.invokeLater(() -> Notifications.Bus.notify(new Notification("ping", "ping", "connection is bad: " + duration + "ms", NotificationType.INFORMATION)));
+//            }
+//
+//            @Override
+//            public void onFastTime() {
+//                widget.updateIcon(GREEN_ICON);
+//            }
+//
+//            @Override
+//            public void onMediumTime() {
+//                widget.updateIcon(YELLOW_ICON);
+//            }
+//
+//            @Override
+//            public void onSlowTime() {
+//                widget.updateIcon(RED_ICON);
+//            }
+//        };
+//
+//        PingExecutor ping = new CommandLinePing(internetAddress, pingListener);
+//        ping.start();
     }
 }
