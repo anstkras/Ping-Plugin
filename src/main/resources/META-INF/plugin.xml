@@ -6,17 +6,17 @@
     <depends>com.intellij.modules.lang</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <projectConfigurable groupId="tools" displayName="PingPlugin"
+        <applicationConfigurable groupId="tools" displayName="PingPlugin"
                                  id="preferences.PingConfigurable"
                                  instance="configurable.PingConfigurable"/>
-        <projectService serviceInterface="configurable.PingConfig" serviceImplementation="configurable.PingConfig"/>
+        <applicationService serviceInterface="configurable.PingConfig" serviceImplementation="configurable.PingConfig"/>
         <statusBarWidgetProvider implementation="ping.PingStatusBarWidgetProvider"/>
 
     </extensions>
 
-    <project-components>
+    <application-components>
         <component>
             <implementation-class>ping.PingComponent</implementation-class>
         </component>
-    </project-components>
+    </application-components>
 </idea-plugin>

@@ -11,11 +11,9 @@ import javax.swing.*;
 
 public class PingConfigurable implements SearchableConfigurable {
 
-    private final Project project;
     private PingConfigurableGUI gui;
 
-    public PingConfigurable(@NotNull Project project) {
-        this.project = project;
+    public PingConfigurable() {
     }
 
     @Nls
@@ -46,7 +44,7 @@ public class PingConfigurable implements SearchableConfigurable {
     @Override
     public JComponent createComponent() {
         gui = new PingConfigurableGUI();
-        gui.createUI(project);
+        gui.createUI();
         return gui.getRootPanel();
     }
 

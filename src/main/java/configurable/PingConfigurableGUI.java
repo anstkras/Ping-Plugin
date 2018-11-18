@@ -15,8 +15,8 @@ public class PingConfigurableGUI {
         return rootPanel;
     }
 
-    public void createUI(Project project) {
-        config = PingConfig.getInstance(project);
+    public void createUI() {
+        config = PingConfig.getInstance();
         addressTextField.setText(config.getInternetAddress());
         fastTimeTextField.setText(String.valueOf(config.getFastTime()));
         mediumTimeTextField.setText(String.valueOf(config.getMediumTime()));

@@ -21,8 +21,8 @@ public class PingConfig implements PersistentStateComponent<PingConfig> {
     private long mediumTime = 40;
 
     @Nullable
-    public static PingConfig getInstance(Project project) {
-        return ServiceManager.getService(project, PingConfig.class);
+    public static PingConfig getInstance() {
+        return ServiceManager.getService(PingConfig.class);
     }
 
     @Nullable
