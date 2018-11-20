@@ -10,7 +10,7 @@
                                  id="preferences.PingConfigurable"
                                  instance="configurable.PingConfigurable"/>
         <applicationService serviceInterface="configurable.PingConfig" serviceImplementation="configurable.PingConfig"/>
-        <statusBarWidgetProvider implementation="ping.PingStatusBarWidgetProvider"/>
+        <statusBarWidgetProvider implementation="PingUI.PingStatusBarWidgetProvider"/>
 
     </extensions>
 

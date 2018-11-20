@@ -1,4 +1,4 @@
-package ping;
+package PingUI;
 
 import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.util.Consumer;

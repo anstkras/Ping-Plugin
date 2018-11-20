@@ -9,6 +9,8 @@ import com.intellij.execution.process.ProcessHandler;
 import com.intellij.openapi.util.Key;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -18,13 +20,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 // CommandLinePing parses ping output to get average round-trip time
-public class CommandLinePing extends PingExecutor {
+public class CommandLinePing implements PingExecutor {
     private final Logger logger = Logger.getLogger("ping");
     private final long period = 30; // in seconds
     private final String internetAddress;
+    private final List<PingResultListener> listeners = new ArrayList<>();
+    private static final String ERROR_MESSAGE = "There are some problems with internet connection";
 
-    protected CommandLinePing(String internetAddress, PingListener pingListener) {
-        super(pingListener);
+    protected CommandLinePing(String internetAddress, PingResultListener pingResultListener) {
         this.internetAddress = internetAddress;
     }
 
@@ -43,8 +46,10 @@ public class CommandLinePing extends PingExecutor {
                 @Override
                 public void processTerminated(@NotNull ProcessEvent event) {
                     if (event.getExitCode() != 0) {
-                        logger.log(Level.INFO, "there are some problems with internet connection");
-                        pingListener.onError();
+                        logger.log(Level.INFO, ERROR_MESSAGE);
+                        for (PingResultListener listener : listeners) {
+                            listener.onError(ERROR_MESSAGE);
+                        }
                     }
                 }
 
@@ -55,14 +60,10 @@ public class CommandLinePing extends PingExecutor {
                         Pattern pattern = Pattern.compile("(\\d+(\\.\\d+)?)");
                         Matcher matcher = pattern.matcher(str);
                         if (matcher.find() && matcher.find()) {
-                            double time = Double.parseDouble(matcher.group());
+                            long time = (long) Double.parseDouble(matcher.group());
                             logger.log(Level.INFO, "rtt time: " + String.valueOf(time));
-                            if (time <= pingListener.getFastTime()) {
-                                pingListener.onFastTime();
-                            } else if (time <= pingListener.getMediumTime()) {
-                                pingListener.onMediumTime();
-                            } else {
-                                pingListener.onSlowTime();
+                            for (PingResultListener listener : listeners) {
+                                listener.onGivenTime(time);
                             }
                         } else {
                             logger.log(Level.WARNING, "average time has not been found in string: " + str);
@@ -76,5 +77,13 @@ public class CommandLinePing extends PingExecutor {
         };
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
         executor.scheduleAtFixedRate(runPing, 0, period, TimeUnit.SECONDS);
+    }
+
+    public void addListener(PingResultListener pingResultListener) {
+        listeners.add(pingResultListener);
+    }
+
+    public void removeListener(PingResultListener pingResultListener) {
+        listeners.remove(pingResultListener);
     }
 }
