@@ -21,14 +21,17 @@ import java.util.regex.Pattern;
 
 // CommandLinePing parses ping output to get average round-trip time
 public class CommandLinePing implements PingExecutor {
+    private static final String ERROR_MESSAGE = "There are some problems with internet connection";
     private final Logger logger = Logger.getLogger("ping");
-    private final long period = 30; // in seconds
+    private final long timeFrequency;
+    private final TimeUnit timeUnit;
     private final String internetAddress;
     private final List<PingResultListener> listeners = new ArrayList<>();
-    private static final String ERROR_MESSAGE = "There are some problems with internet connection";
 
-    protected CommandLinePing(String internetAddress, PingResultListener pingResultListener) {
+    protected CommandLinePing(String internetAddress, long timeFrequency, TimeUnit timeUnit) {
         this.internetAddress = internetAddress;
+        this.timeFrequency = timeFrequency;
+        this.timeUnit = timeUnit;
     }
 
     @Override
@@ -76,7 +79,7 @@ public class CommandLinePing implements PingExecutor {
             logger.log(Level.INFO, "end ping process");
         };
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(runPing, 0, period, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(runPing, 0, timeFrequency, timeUnit);
     }
 
     public void addListener(PingResultListener pingResultListener) {

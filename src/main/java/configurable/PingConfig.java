@@ -8,6 +8,8 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.concurrent.TimeUnit;
+
 @State(
         name = "PingConfig",
         storages = {
@@ -18,6 +20,8 @@ public class PingConfig implements PersistentStateComponent<PingConfig> {
     private String internetAddress = "google.com";
     private long fastTime = 20;
     private long mediumTime = 40;
+    private long timeFrequency = 30;
+    private TimeUnit timeUnit = TimeUnit.SECONDS;
 
     @Nullable
     public static PingConfig getInstance() {
@@ -57,5 +61,21 @@ public class PingConfig implements PersistentStateComponent<PingConfig> {
 
     public void setMediumTime(long mediumTime) {
         this.mediumTime = mediumTime;
+    }
+
+    public long getTimeFrequency() {
+        return timeFrequency;
+    }
+
+    public void setTimeFrequency(long timeFrequency) {
+        this.timeFrequency = timeFrequency;
+    }
+
+    public TimeUnit getTimeUnit() {
+        return timeUnit;
+    }
+
+    public void setTimeUnit(TimeUnit timeUnit) {
+        this.timeUnit = timeUnit;
     }
 }

@@ -5,6 +5,7 @@ import configurable.PingConfig;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,6 +16,8 @@ public class PingComponent implements BaseComponent {
     private String internetAddress;
     private long fastTime;
     private long mediumTime;
+    private long timeFrequency;
+    private TimeUnit timeUnit;
 
     PingComponent() {
         logger.log(Level.INFO, "start");
@@ -26,6 +29,8 @@ public class PingComponent implements BaseComponent {
         internetAddress = config.getInternetAddress();
         fastTime = config.getFastTime();
         mediumTime = config.getMediumTime();
+        timeFrequency = config.getTimeFrequency();
+        timeUnit = config.getTimeUnit();
 
         PingResultListener pingResultListener = new PingResultListener() {
             @Override
@@ -49,7 +54,7 @@ public class PingComponent implements BaseComponent {
             }
         };
 
-        CommandLinePing ping = new CommandLinePing(internetAddress, pingResultListener);
+        CommandLinePing ping = new CommandLinePing(internetAddress, timeFrequency, timeUnit);
         ping.addListener(pingResultListener);
         ping.start();
     }
