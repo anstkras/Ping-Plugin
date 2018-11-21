@@ -18,6 +18,8 @@ public class PingComponent implements BaseComponent {
     private long mediumTime;
     private long timeFrequency;
     private TimeUnit timeUnit;
+    private CommandLinePing commandLinePing;
+    private PingResultListener pingResultListener;
 
     PingComponent() {
         logger.log(Level.INFO, "start");
@@ -26,13 +28,41 @@ public class PingComponent implements BaseComponent {
 
     @Override
     public void initComponent() {
+        getParameters();
+
+        commandLinePing = new CommandLinePing(internetAddress, timeFrequency, timeUnit);
+        pingResultListener = getListener();
+        commandLinePing.addListener(pingResultListener);
+        commandLinePing.start();
+    }
+
+    public void updateParameters() {
+        commandLinePing.removeListener(pingResultListener);
+        getParameters();
+        commandLinePing.setParameters(internetAddress, timeFrequency, timeUnit);
+        pingResultListener = getListener();
+        commandLinePing.addListener(pingResultListener);
+        commandLinePing.restart();
+    }
+
+    public void addListener(PingComponentListener pingListener) {
+        listeners.add(pingListener);
+    }
+
+    public void removeListener(PingComponentListener pingListener) {
+        listeners.remove(pingListener);
+    }
+
+    private void getParameters() {
         internetAddress = config.getInternetAddress();
         fastTime = config.getFastTime();
         mediumTime = config.getMediumTime();
         timeFrequency = config.getTimeFrequency();
         timeUnit = config.getTimeUnit();
+    }
 
-        PingResultListener pingResultListener = new PingResultListener() {
+    private PingResultListener getListener() {
+        return new PingResultListener() {
             @Override
             public void onError(String message) {
                 for (PingComponentListener listener : listeners) {
@@ -53,17 +83,5 @@ public class PingComponent implements BaseComponent {
                 }
             }
         };
-
-        CommandLinePing ping = new CommandLinePing(internetAddress, timeFrequency, timeUnit);
-        ping.addListener(pingResultListener);
-        ping.start();
-    }
-
-    public void addListener(PingComponentListener pingListener) {
-        listeners.add(pingListener);
-    }
-
-    public void removeListener(PingComponentListener pingListener) {
-        listeners.remove(pingListener);
     }
 }

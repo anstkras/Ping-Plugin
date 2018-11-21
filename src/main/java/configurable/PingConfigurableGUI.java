@@ -1,5 +1,8 @@
 package configurable;
 
+import com.intellij.openapi.application.ApplicationManager;
+import ping.PingComponent;
+
 import javax.swing.*;
 import java.util.concurrent.TimeUnit;
 
@@ -62,6 +65,7 @@ public class PingConfigurableGUI {
         config.setMediumTime(Integer.valueOf(mediumTimeTextField.getText()));
         config.setTimeFrequency(Integer.valueOf(frequencyTextField.getText()));
         config.setTimeUnit(TimeUnit.valueOf(((String) timeUnitComboBox.getSelectedItem()).toUpperCase()));
+        ApplicationManager.getApplication().getComponent(PingComponent.class).updateParameters();
     }
 
     public void reset() {

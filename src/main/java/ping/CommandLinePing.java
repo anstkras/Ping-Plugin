@@ -23,15 +23,25 @@ import java.util.regex.Pattern;
 public class CommandLinePing implements PingExecutor {
     private static final String ERROR_MESSAGE = "There are some problems with internet connection";
     private final Logger logger = Logger.getLogger("ping");
-    private final long timeFrequency;
-    private final TimeUnit timeUnit;
-    private final String internetAddress;
     private final List<PingResultListener> listeners = new ArrayList<>();
+    private long timeFrequency;
+    private TimeUnit timeUnit;
+    private String internetAddress;
+    private ScheduledExecutorService executor;
 
     protected CommandLinePing(String internetAddress, long timeFrequency, TimeUnit timeUnit) {
+        setParameters(internetAddress, timeFrequency, timeUnit);
+    }
+
+    public void setParameters(String internetAddress, long timeFrequency, TimeUnit timeUnit) {
         this.internetAddress = internetAddress;
         this.timeFrequency = timeFrequency;
         this.timeUnit = timeUnit;
+    }
+
+    public void restart() {
+        executor.shutdown();
+        start();
     }
 
     @Override
@@ -78,7 +88,7 @@ public class CommandLinePing implements PingExecutor {
             processHandler.startNotify();
             logger.log(Level.INFO, "end ping process");
         };
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+        executor = Executors.newScheduledThreadPool(1);
         executor.scheduleAtFixedRate(runPing, 0, timeFrequency, timeUnit);
     }
 
