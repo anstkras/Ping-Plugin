@@ -4,7 +4,6 @@ import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
-import com.intellij.openapi.project.Project;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -12,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 @State(
         name = "PingConfig",
         storages = {
-                @Storage("PingConfig.xml")}
+                @Storage("other.xml")}
 )
 public class PingConfig implements PersistentStateComponent<PingConfig> {
     // TODO is this a valid way to set default values?
