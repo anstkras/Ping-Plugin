@@ -1,6 +1,7 @@
 package PingUI;
 
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarWidget;
 import org.jetbrains.annotations.NotNull;
@@ -9,14 +10,12 @@ import ping.PingComponent;
 import ping.PingComponentListener;
 
 import javax.swing.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static icons.PingPluginsIcons.*;
 
 public class PingWidget implements StatusBarWidget {
     private final PingPresentation pingPresentation;
-    private final Logger logger = Logger.getLogger("ping");
+    private final Logger logger = Logger.getInstance(PingWidget.class);
     private StatusBar statusBar;
 
     public PingWidget() {
@@ -74,7 +73,7 @@ public class PingWidget implements StatusBarWidget {
     private void updateIcon(Icon icon) {
         if (pingPresentation.getIcon() != icon) {
             if (statusBar == null) {
-                logger.log(Level.INFO, "status bar is null");
+                logger.error("status bar is null");
             } else {
                 pingPresentation.setIcon(icon);
                 statusBar.updateWidget(ID());

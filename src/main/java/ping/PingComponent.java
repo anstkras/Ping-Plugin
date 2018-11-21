@@ -6,11 +6,8 @@ import configurable.PingConfig;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class PingComponent implements BaseComponent {
-    private final Logger logger = Logger.getLogger("ping");
     private final PingConfig config;
     private final List<PingComponentListener> listeners = new ArrayList<>();
     private String internetAddress;
@@ -22,14 +19,12 @@ public class PingComponent implements BaseComponent {
     private PingResultListener pingResultListener;
 
     PingComponent() {
-        logger.log(Level.INFO, "start");
         config = PingConfig.getInstance();
     }
 
     @Override
     public void initComponent() {
         getParameters();
-
         commandLinePing = new CommandLinePing(internetAddress, timeFrequency, timeUnit);
         pingResultListener = getListener();
         commandLinePing.addListener(pingResultListener);
