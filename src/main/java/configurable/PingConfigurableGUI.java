@@ -4,6 +4,8 @@ import com.intellij.openapi.application.ApplicationManager;
 import ping.PingComponent;
 
 import javax.swing.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.concurrent.TimeUnit;
 
 public class PingConfigurableGUI {
@@ -13,7 +15,19 @@ public class PingConfigurableGUI {
     private JTextField mediumTimeTextField;
     private JTextField frequencyTextField;
     private JComboBox timeUnitComboBox;
+    private JButton testButton;
+    private JLabel testMessage;
     private PingConfig config;
+
+    public PingConfigurableGUI() {
+        testButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                test();
+            }
+        });
+    }
 
     public JPanel getRootPanel() {
         return rootPanel;
@@ -60,6 +74,9 @@ public class PingConfigurableGUI {
     }
 
     public void apply() {
+        if (!test()) {
+            return;
+        }
         config.setInternetAddress(addressTextField.getText());
         config.setFastTime(Integer.valueOf(fastTimeTextField.getText()));
         config.setMediumTime(Integer.valueOf(mediumTimeTextField.getText()));
@@ -74,5 +91,15 @@ public class PingConfigurableGUI {
         mediumTimeTextField.setText(String.valueOf(config.getMediumTime()));
         frequencyTextField.setText(String.valueOf(config.getTimeFrequency()));
         timeUnitComboBox.setSelectedItem(config.getTimeUnit().toString().toLowerCase());
+    }
+
+    private Boolean test() {
+        // TODO add ip validators
+        if (Long.valueOf(mediumTimeTextField.getText()) < Long.valueOf(fastTimeTextField.getText())) {
+            testMessage.setText("Fast time should be less than medium time");
+            return false;
+        }
+        testMessage.setText("Everything is correct");
+        return true;
     }
 }
