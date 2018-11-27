@@ -19,7 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 // CommandLinePing parses ping output to get average round-trip time
-public class CommandLinePing implements PingExecutor {
+public class CommandLinePing {
     private static final String ERROR_MESSAGE = "There are some problems with internet connection";
     private final Logger logger = Logger.getInstance(CommandLinePing.class);
     private final List<PingResultListener> listeners = new ArrayList<>();
@@ -43,7 +43,6 @@ public class CommandLinePing implements PingExecutor {
         start();
     }
 
-    @Override
     public void start() {
         Runnable runPing = () -> {
             ProcessHandler processHandler = null;
