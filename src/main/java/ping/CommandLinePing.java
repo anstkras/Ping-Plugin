@@ -74,7 +74,7 @@ public class CommandLinePing {
                             long time = (long) Double.parseDouble(matcher.group());
                             logger.info("rtt time: " + String.valueOf(time));
                             for (PingResultListener listener : listeners) {
-                                listener.onGivenTime(time);
+                                listener.onMeasuredTime(time);
                             }
                         } else {
                             logger.error("average time has not been found in string: " + str);

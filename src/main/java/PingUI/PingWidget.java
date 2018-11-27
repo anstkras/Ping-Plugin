@@ -4,10 +4,12 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarWidget;
+import configurable.PingConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ping.CommandLinePing;
 import ping.PingComponent;
-import ping.PingComponentListener;
+import ping.PingResultListener;
 
 import javax.swing.*;
 
@@ -47,25 +49,25 @@ public class PingWidget implements StatusBarWidget {
 
     public void registerCustomListeners() {
         PingComponent pingComponent = ApplicationManager.getApplication().getComponent(PingComponent.class);
-        pingComponent.addListener(new PingComponentListener() {
+        CommandLinePing commandLinePing = pingComponent.getCommandLinePing(); // TODO is install() invoked after initComponent()?
+        commandLinePing.addListener(new PingResultListener() {
             @Override
             public void onError(String message) {
                 updateIcon(RED_ICON);
             }
 
             @Override
-            public void onFastTime() {
-                updateIcon(GREEN_ICON);
-            }
-
-            @Override
-            public void onMediumTime() {
-                updateIcon(YELLOW_ICON);
-            }
-
-            @Override
-            public void onSlowTime() {
-                updateIcon(RED_ICON);
+            public void onMeasuredTime(long time) {
+                PingConfig config = PingConfig.getInstance();
+                long fastTime = config.getFastTime();
+                long mediumTime = config.getMediumTime();
+                if (time <= fastTime) {
+                    updateIcon(GREEN_ICON);
+                } else if (time <= mediumTime) {
+                    updateIcon(YELLOW_ICON);
+                } else {
+                    updateIcon(RED_ICON);
+                }
             }
         });
     }
