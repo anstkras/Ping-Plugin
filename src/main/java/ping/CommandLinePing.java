@@ -50,7 +50,7 @@ public class CommandLinePing implements PingExecutor {
             try {
                 processHandler = new OSProcessHandler(new GeneralCommandLine("ping", "-c", "4", internetAddress));
             } catch (ExecutionException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage());
             }
             logger.info("start ping process");
 
