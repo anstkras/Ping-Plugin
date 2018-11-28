@@ -19,4 +19,15 @@ public class TimeUnitRecord {
     public String toString() {
         return timeUnit.toString().toLowerCase();
     }
+
+    @Override
+    public boolean equals(Object record) {
+        if (record == null) {
+            return false;
+        }
+        if (!(record instanceof TimeUnitRecord)) {
+            return false;
+        }
+        return timeUnit == ((TimeUnitRecord) record).timeUnit;
+    }
 }

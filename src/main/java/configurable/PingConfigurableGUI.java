@@ -57,6 +57,7 @@ public class PingConfigurableGUI {
         TimeUnitRecord[] timeUnitRecords = {new TimeUnitRecord(TimeUnit.MILLISECONDS), new TimeUnitRecord(TimeUnit.SECONDS), new TimeUnitRecord((TimeUnit.MINUTES))};
         ComboBoxModel<TimeUnitRecord> comboBoxModel = new DefaultComboBoxModel<>(timeUnitRecords);
         timeUnitComboBox.setModel(comboBoxModel);
+        timeUnitComboBox.setSelectedItem(new TimeUnitRecord(config.getTimeUnit()));
     }
 
     public JTextField getMediumTimeField() {
