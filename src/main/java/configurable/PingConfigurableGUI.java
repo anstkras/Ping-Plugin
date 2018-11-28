@@ -14,7 +14,7 @@ public class PingConfigurableGUI {
     private JTextField fastTimeTextField;
     private JTextField mediumTimeTextField;
     private JTextField frequencyTextField;
-    private JComboBox timeUnitComboBox;
+    private JComboBox<TimeUnitRecord> timeUnitComboBox;
     private JButton testButton;
     private JLabel testMessage;
     private PingConfig config;
@@ -39,8 +39,8 @@ public class PingConfigurableGUI {
         fastTimeTextField.setText(String.valueOf(config.getFastTime()));
         mediumTimeTextField.setText(String.valueOf(config.getMediumTime()));
         frequencyTextField.setText(String.valueOf(config.getTimeFrequency()));
-        String[] timeUnits = {"milliseconds", "seconds", "minutes", "hours"};
-        ComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>(timeUnits);
+        TimeUnitRecord[] timeUnitRecords = {new TimeUnitRecord(TimeUnit.MILLISECONDS), new TimeUnitRecord(TimeUnit.SECONDS), new TimeUnitRecord((TimeUnit.MINUTES))};
+        ComboBoxModel<TimeUnitRecord> comboBoxModel = new DefaultComboBoxModel<>(timeUnitRecords);
         timeUnitComboBox.setModel(comboBoxModel);
     }
 
@@ -69,7 +69,7 @@ public class PingConfigurableGUI {
         modified |= !fastTimeTextField.getText().equals(String.valueOf(config.getFastTime()));
         modified |= !mediumTimeTextField.getText().equals(String.valueOf(config.getMediumTime()));
         modified |= !frequencyTextField.getText().equals(String.valueOf(config.getTimeFrequency()));
-        modified |= !timeUnitComboBox.getSelectedItem().equals(config.getTimeUnit().toString().toLowerCase());
+        modified |= ((TimeUnitRecord) timeUnitComboBox.getSelectedItem()).getTimeUnit() != config.getTimeUnit();
         return modified;
     }
 
@@ -81,7 +81,7 @@ public class PingConfigurableGUI {
         config.setFastTime(Integer.valueOf(fastTimeTextField.getText()));
         config.setMediumTime(Integer.valueOf(mediumTimeTextField.getText()));
         config.setTimeFrequency(Integer.valueOf(frequencyTextField.getText()));
-        config.setTimeUnit(TimeUnit.valueOf(((String) timeUnitComboBox.getSelectedItem()).toUpperCase()));
+        config.setTimeUnit(((TimeUnitRecord) timeUnitComboBox.getSelectedItem()).getTimeUnit());
         ApplicationManager.getApplication().getComponent(PingComponent.class).updateParameters();
     }
 
@@ -90,7 +90,7 @@ public class PingConfigurableGUI {
         fastTimeTextField.setText(String.valueOf(config.getFastTime()));
         mediumTimeTextField.setText(String.valueOf(config.getMediumTime()));
         frequencyTextField.setText(String.valueOf(config.getTimeFrequency()));
-        timeUnitComboBox.setSelectedItem(config.getTimeUnit().toString().toLowerCase());
+        timeUnitComboBox.setSelectedItem(new TimeUnitRecord(config.getTimeUnit()));
     }
 
     private Boolean test() {
