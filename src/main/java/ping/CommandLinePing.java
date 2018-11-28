@@ -28,6 +28,8 @@ public class CommandLinePing {
     private String internetAddress;
     private ScheduledExecutorService executor;
 
+    public CommandLinePing() {}
+
     protected CommandLinePing(String internetAddress, long timeFrequency, TimeUnit timeUnit) {
         setParameters(internetAddress, timeFrequency, timeUnit);
     }

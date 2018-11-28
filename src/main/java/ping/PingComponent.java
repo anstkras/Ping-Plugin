@@ -14,12 +14,13 @@ public class PingComponent implements BaseComponent {
 
     PingComponent() {
         config = PingConfig.getInstance();
+        commandLinePing = new CommandLinePing();
     }
 
     @Override
     public void initComponent() {
         getParameters();
-        commandLinePing = new CommandLinePing(internetAddress, timeFrequency, timeUnit);
+        commandLinePing.setParameters(internetAddress, timeFrequency, timeUnit);
         commandLinePing.start();
     }
 

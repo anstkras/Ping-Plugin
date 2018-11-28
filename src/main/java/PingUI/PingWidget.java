@@ -47,7 +47,7 @@ public class PingWidget implements StatusBarWidget {
 
     }
 
-    public void registerCustomListeners() {
+    private void registerCustomListeners() {
         PingComponent pingComponent = ApplicationManager.getApplication().getComponent(PingComponent.class);
         CommandLinePing commandLinePing = pingComponent.getCommandLinePing(); // TODO is install() invoked after initComponent()?
         commandLinePing.addListener(new PingResultListener() {
@@ -59,14 +59,19 @@ public class PingWidget implements StatusBarWidget {
             @Override
             public void onMeasuredTime(long time) {
                 PingConfig config = PingConfig.getInstance();
-                long fastTime = config.getFastTime();
-                long mediumTime = config.getMediumTime();
-                if (time <= fastTime) {
-                    updateIcon(GREEN_ICON);
-                } else if (time <= mediumTime) {
-                    updateIcon(YELLOW_ICON);
-                } else {
-                    updateIcon(RED_ICON);
+                if (config == null) {
+                    logger.error("ping config is null");
+                }
+                else {
+                    long fastTime = config.getFastTime();
+                    long mediumTime = config.getMediumTime();
+                    if (time <= fastTime) {
+                        updateIcon(GREEN_ICON);
+                    } else if (time <= mediumTime) {
+                        updateIcon(YELLOW_ICON);
+                    } else {
+                        updateIcon(RED_ICON);
+                    }
                 }
             }
         });
