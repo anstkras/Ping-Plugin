@@ -60,7 +60,7 @@ public class PingWidget implements StatusBarWidget {
             public void onMeasuredTime(long time) {
                 PingConfig config = PingConfig.getInstance();
                 if (config == null) {
-                    logger.error("ping config is null");
+                    logger.info("ping config is null");
                 }
                 else {
                     long fastTime = config.getFastTime();
@@ -80,7 +80,7 @@ public class PingWidget implements StatusBarWidget {
     private void updateIcon(Icon icon) {
         if (pingPresentation.getIcon() != icon) {
             if (statusBar == null) {
-                logger.error("status bar is null");
+                logger.info("status bar is null");
             } else {
                 pingPresentation.setIcon(icon);
                 statusBar.updateWidget(ID());
