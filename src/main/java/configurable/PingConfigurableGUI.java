@@ -2,10 +2,14 @@ package configurable;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.options.ConfigurationException;
+import com.intellij.ui.JBColor;
 import com.intellij.ui.components.fields.IntegerField;
+import ping.CommandLinePing;
 import ping.PingComponent;
+import ping.PingResultListener;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.TimeUnit;
@@ -18,17 +22,10 @@ public class PingConfigurableGUI {
     private IntegerField frequencyField;
     private JComboBox<TimeUnitRecord> timeUnitComboBox;
     private JButton testButton;
-    private JLabel testMessage;
+    private JTextArea testMessage;
     private PingConfig config;
 
     public PingConfigurableGUI() {
-        testButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                //testTimes();
-            }
-        });
     }
 
     public JPanel getRootPanel() {
@@ -58,6 +55,15 @@ public class PingConfigurableGUI {
         ComboBoxModel<TimeUnitRecord> comboBoxModel = new DefaultComboBoxModel<>(timeUnitRecords);
         timeUnitComboBox.setModel(comboBoxModel);
         timeUnitComboBox.setSelectedItem(new TimeUnitRecord(config.getTimeUnit()));
+
+        testButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                setAllEnabled(false);
+                testInternetAddress();
+            }
+        });
     }
 
     public JTextField getMediumTimeField() {
@@ -108,6 +114,29 @@ public class PingConfigurableGUI {
         timeUnitComboBox.setSelectedItem(new TimeUnitRecord(config.getTimeUnit()));
     }
 
+    private void testInternetAddress() {
+        CommandLinePing commandLinePing = new CommandLinePing();
+        commandLinePing.setInternetAddress(addressTextField.getText());
+        commandLinePing.start(false);
+        commandLinePing.addListener(new PingResultListener() {
+            @Override
+            public void onError(String message) {
+                testMessage.setForeground(JBColor.RED);
+                testMessage.setVisible(true);
+                testMessage.setText(message);
+                setAllEnabled(true);
+            }
+
+            @Override
+            public void onMeasuredTime(long time) {
+                testMessage.setForeground(JBColor.BLACK);
+                testMessage.setVisible(true);
+                testMessage.setText("Internet address is valid");
+                setAllEnabled(true);
+            }
+        });
+    }
+
     private void testTimes() throws ConfigurationException {
         fastTimeField.validateContent();
         mediumTimeField.validateContent();
@@ -115,7 +144,15 @@ public class PingConfigurableGUI {
         if (Long.valueOf(mediumTimeField.getText()) < Long.valueOf(fastTimeField.getText())) {
             throw new ConfigurationException("Fast time should be less than medium time");
         }
-
+        testMessage.setVisible(true);
+        testMessage.setForeground(JBColor.BLACK);
         testMessage.setText("Everything is correct");
+    }
+
+    private void setAllEnabled(boolean enabled) {
+        Component[] components = rootPanel.getComponents();
+        for (Component component : components) {
+            component.setEnabled(enabled);
+        }
     }
 }

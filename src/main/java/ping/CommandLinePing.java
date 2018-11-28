@@ -21,14 +21,15 @@ import java.util.regex.Pattern;
 // CommandLinePing parses ping output to get average round-trip time
 public class CommandLinePing {
     private static final String ERROR_MESSAGE = "There are some problems with internet connection";
-    private final Logger logger = Logger.getInstance(CommandLinePing.class);
+    private final static Logger logger = Logger.getInstance(CommandLinePing.class);
     private final List<PingResultListener> listeners = new ArrayList<>();
     private long timeFrequency;
     private TimeUnit timeUnit;
     private String internetAddress;
     private ScheduledExecutorService executor;
 
-    public CommandLinePing() {}
+    public CommandLinePing() {
+    }
 
     protected CommandLinePing(String internetAddress, long timeFrequency, TimeUnit timeUnit) {
         setParameters(internetAddress, timeFrequency, timeUnit);
@@ -40,28 +41,37 @@ public class CommandLinePing {
         this.timeUnit = timeUnit;
     }
 
+    public void setInternetAddress(String internetAddress) {
+        this.internetAddress = internetAddress;
+    }
+
     public void restart() {
         executor.shutdown();
         start();
     }
 
     public void start() {
+        start(true);
+    }
+
+    public void start(boolean repeat) {
         Runnable runPing = () -> {
             ProcessHandler processHandler = null;
             try {
                 processHandler = new OSProcessHandler(new GeneralCommandLine("ping", "-c", "4", internetAddress));
             } catch (ExecutionException e) {
-                logger.error(e.getMessage());
+                logger.info(e.getMessage());
             }
             logger.info("start ping process");
 
+            StringBuilder stringBuilder = new StringBuilder();
             ProcessAdapter processAdapter = new ProcessAdapter() {
                 @Override
                 public void processTerminated(@NotNull ProcessEvent event) {
                     if (event.getExitCode() != 0) {
-                        logger.error(ERROR_MESSAGE);
+                        logger.info(ERROR_MESSAGE);
                         for (PingResultListener listener : listeners) {
-                            listener.onError(ERROR_MESSAGE);
+                            listener.onError(stringBuilder.toString());
                         }
                     }
                 }
@@ -69,6 +79,8 @@ public class CommandLinePing {
                 @Override
                 public void onTextAvailable(@NotNull ProcessEvent event, @NotNull Key outputType) {
                     String str = event.getText();
+                    stringBuilder.append(str);
+
                     if (str.startsWith("rtt")) {
                         Pattern pattern = Pattern.compile("(\\d+(\\.\\d+)?)");
                         Matcher matcher = pattern.matcher(str);
@@ -79,7 +91,7 @@ public class CommandLinePing {
                                 listener.onMeasuredTime(time);
                             }
                         } else {
-                            logger.error("average time has not been found in string: " + str);
+                            logger.info("average time has not been found in string: " + str);
                         }
                     }
                 }
@@ -89,7 +101,11 @@ public class CommandLinePing {
             logger.info("end ping process");
         };
         executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(runPing, 0, timeFrequency, timeUnit);
+        if (repeat) {
+            executor.scheduleAtFixedRate(runPing, 0, timeFrequency, timeUnit);
+        } else {
+            executor.execute(runPing);
+        }
     }
 
     public void addListener(PingResultListener pingResultListener) {
