@@ -1,6 +1,8 @@
 package configurable;
 
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.options.ConfigurationException;
+import com.intellij.ui.components.fields.IntegerField;
 import ping.PingComponent;
 
 import javax.swing.*;
@@ -11,9 +13,9 @@ import java.util.concurrent.TimeUnit;
 public class PingConfigurableGUI {
     private JPanel rootPanel;
     private JTextField addressTextField;
-    private JTextField fastTimeTextField;
-    private JTextField mediumTimeTextField;
-    private JTextField frequencyTextField;
+    private IntegerField fastTimeField;
+    private IntegerField mediumTimeField;
+    private IntegerField frequencyField;
     private JComboBox<TimeUnitRecord> timeUnitComboBox;
     private JButton testButton;
     private JLabel testMessage;
@@ -24,7 +26,7 @@ public class PingConfigurableGUI {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                test();
+                //testTimes();
             }
         });
     }
@@ -36,28 +38,41 @@ public class PingConfigurableGUI {
     public void createUI() {
         config = PingConfig.getInstance();
         addressTextField.setText(config.getInternetAddress());
-        fastTimeTextField.setText(String.valueOf(config.getFastTime()));
-        mediumTimeTextField.setText(String.valueOf(config.getMediumTime()));
-        frequencyTextField.setText(String.valueOf(config.getTimeFrequency()));
+
+        fastTimeField.setCanBeEmpty(false);
+        fastTimeField.setMinValue(1);
+        fastTimeField.setMaxValue(3000);
+        fastTimeField.setText(String.valueOf(config.getFastTime()));
+
+        mediumTimeField.setCanBeEmpty(false);
+        mediumTimeField.setMinValue(1);
+        mediumTimeField.setMaxValue(3000);
+        mediumTimeField.setText(String.valueOf(config.getMediumTime()));
+
+        frequencyField.setCanBeEmpty(false);
+        frequencyField.setMinValue(1);
+        frequencyField.setMaxValue(30000);
+        frequencyField.setText(String.valueOf(config.getTimeFrequency()));
+
         TimeUnitRecord[] timeUnitRecords = {new TimeUnitRecord(TimeUnit.MILLISECONDS), new TimeUnitRecord(TimeUnit.SECONDS), new TimeUnitRecord((TimeUnit.MINUTES))};
         ComboBoxModel<TimeUnitRecord> comboBoxModel = new DefaultComboBoxModel<>(timeUnitRecords);
         timeUnitComboBox.setModel(comboBoxModel);
     }
 
-    public JTextField getMediumTimeTextField() {
-        return mediumTimeTextField;
+    public JTextField getMediumTimeField() {
+        return mediumTimeField;
     }
 
-    public JTextField getFastTimeTextField() {
-        return fastTimeTextField;
+    public JTextField getFastTimeField() {
+        return fastTimeField;
     }
 
     public JTextField getAddressTextField() {
         return addressTextField;
     }
 
-    public JTextField getFrequencyTextField() {
-        return frequencyTextField;
+    public JTextField getFrequencyField() {
+        return frequencyField;
     }
 
     public JComboBox getTimeUnitComboBox() {
@@ -66,40 +81,40 @@ public class PingConfigurableGUI {
 
     public boolean isModified() {
         boolean modified = !addressTextField.getText().equals(config.getInternetAddress());
-        modified |= !fastTimeTextField.getText().equals(String.valueOf(config.getFastTime()));
-        modified |= !mediumTimeTextField.getText().equals(String.valueOf(config.getMediumTime()));
-        modified |= !frequencyTextField.getText().equals(String.valueOf(config.getTimeFrequency()));
+        modified |= !fastTimeField.getText().equals(String.valueOf(config.getFastTime()));
+        modified |= !mediumTimeField.getText().equals(String.valueOf(config.getMediumTime()));
+        modified |= !frequencyField.getText().equals(String.valueOf(config.getTimeFrequency()));
         modified |= ((TimeUnitRecord) timeUnitComboBox.getSelectedItem()).getTimeUnit() != config.getTimeUnit();
         return modified;
     }
 
-    public void apply() {
-        if (!test()) {
-            return;
-        }
+    public void apply() throws ConfigurationException {
+        testTimes();
         config.setInternetAddress(addressTextField.getText());
-        config.setFastTime(Integer.valueOf(fastTimeTextField.getText()));
-        config.setMediumTime(Integer.valueOf(mediumTimeTextField.getText()));
-        config.setTimeFrequency(Integer.valueOf(frequencyTextField.getText()));
+        config.setFastTime(Integer.valueOf(fastTimeField.getText()));
+        config.setMediumTime(Integer.valueOf(mediumTimeField.getText()));
+        config.setTimeFrequency(Integer.valueOf(frequencyField.getText()));
         config.setTimeUnit(((TimeUnitRecord) timeUnitComboBox.getSelectedItem()).getTimeUnit());
+
         ApplicationManager.getApplication().getComponent(PingComponent.class).updateParameters();
     }
 
     public void reset() {
         addressTextField.setText(config.getInternetAddress());
-        fastTimeTextField.setText(String.valueOf(config.getFastTime()));
-        mediumTimeTextField.setText(String.valueOf(config.getMediumTime()));
-        frequencyTextField.setText(String.valueOf(config.getTimeFrequency()));
+        fastTimeField.setText(String.valueOf(config.getFastTime()));
+        mediumTimeField.setText(String.valueOf(config.getMediumTime()));
+        frequencyField.setText(String.valueOf(config.getTimeFrequency()));
         timeUnitComboBox.setSelectedItem(new TimeUnitRecord(config.getTimeUnit()));
     }
 
-    private Boolean test() {
-        // TODO add ip validators
-        if (Long.valueOf(mediumTimeTextField.getText()) < Long.valueOf(fastTimeTextField.getText())) {
-            testMessage.setText("Fast time should be less than medium time");
-            return false;
+    private void testTimes() throws ConfigurationException {
+        fastTimeField.validateContent();
+        mediumTimeField.validateContent();
+        frequencyField.validateContent();
+        if (Long.valueOf(mediumTimeField.getText()) < Long.valueOf(fastTimeField.getText())) {
+            throw new ConfigurationException("Fast time should be less than medium time");
         }
+
         testMessage.setText("Everything is correct");
-        return true;
     }
 }
