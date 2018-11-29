@@ -1,4 +1,4 @@
-package configurable;
+package intellij.plugin.ping.configurable;
 
 import org.jetbrains.annotations.NotNull;
 

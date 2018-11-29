@@ -1,12 +1,12 @@
-package configurable;
+package intellij.plugin.ping.configurable;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.fields.IntegerField;
-import ping.CommandLinePing;
-import ping.PingComponent;
-import ping.PingResultListener;
+import intellij.plugin.ping.ping.CommandLinePing;
+import intellij.plugin.ping.ping.PingComponent;
+import intellij.plugin.ping.ping.PingResultListener;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,4 +1,4 @@
-package PingUI;
+package intellij.plugin.ping.PingUI;
 
 import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.util.Consumer;
@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 
-import static icons.PingPluginsIcons.GRAY_ICON;
+import static intellij.plugin.ping.icons.PingPluginsIcons.GRAY_ICON;
 
 public class PingPresentation implements StatusBarWidget.IconPresentation {
     private final PingWidget widget;

@@ -1,4 +1,4 @@
-package configurable;
+package intellij.plugin.ping.configurable;
 
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SearchableConfigurable;

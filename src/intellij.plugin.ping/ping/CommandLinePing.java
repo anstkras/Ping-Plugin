@@ -1,4 +1,4 @@
-package ping;
+package intellij.plugin.ping.ping;
 
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
@@ -8,6 +8,7 @@ import com.intellij.execution.process.ProcessEvent;
 import com.intellij.execution.process.ProcessHandler;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.Key;
+import intellij.plugin.ping.ping.PingResultListener;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

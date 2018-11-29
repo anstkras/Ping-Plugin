@@ -1,4 +1,4 @@
-package ping;
+package intellij.plugin.ping.ping;
 
 import java.util.EventListener;
 

@@ -1,19 +1,19 @@
-package PingUI;
+package intellij.plugin.ping.PingUI;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarWidget;
-import configurable.PingConfig;
+import intellij.plugin.ping.configurable.PingConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ping.CommandLinePing;
-import ping.PingComponent;
-import ping.PingResultListener;
+import intellij.plugin.ping.ping.CommandLinePing;
+import intellij.plugin.ping.ping.PingComponent;
+import intellij.plugin.ping.ping.PingResultListener;
 
 import javax.swing.*;
 
-import static icons.PingPluginsIcons.*;
+import static intellij.plugin.ping.icons.PingPluginsIcons.*;
 
 public class PingWidget implements StatusBarWidget {
     private final PingPresentation pingPresentation;

@@ -1,0 +1,22 @@
+<idea-plugin>
+    <id>intellij.plugin.ping</id>
+    <name>Ping Plugin</name>
+    <version>0.0.1</version>
+
+    <depends>com.intellij.modules.lang</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationConfigurable groupId="tools" displayName="PingPlugin"
+                                 id="preferences.PingConfigurable"
+                                 instance="intellij.plugin.ping.configurable.PingConfigurable"/>
+        <applicationService serviceInterface="intellij.plugin.ping.configurable.PingConfig" serviceImplementation="intellij.plugin.ping.configurable.PingConfig"/>
+        <statusBarWidgetProvider implementation="intellij.plugin.ping.PingUI.PingStatusBarWidgetProvider"/>
+
+    </extensions>
+
+    <application-components>
+        <component>
+            <implementation-class>intellij.plugin.ping.ping.PingComponent</implementation-class>
+        </component>
+    </application-components>
+</idea-plugin>

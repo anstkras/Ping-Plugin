@@ -3,13 +3,23 @@ plugins {
     id 'org.jetbrains.intellij' version '0.3.12'
 }
 
-group 'com.qwe'
+group 'com.anstkras'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+}
+sourceSets {
+    main {
+        java {
+            srcDirs 'src'
+        }
+        resources {
+            srcDirs 'src/resources'
+        }
+    }
 }
 
 dependencies {

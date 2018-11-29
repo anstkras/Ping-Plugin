@@ -1,4 +1,4 @@
-package configurable;
+package intellij.plugin.ping.configurable;
 
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;

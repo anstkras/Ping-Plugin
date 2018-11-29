@@ -1,4 +1,4 @@
-package icons;
+package intellij.plugin.ping.icons;
 
 import com.intellij.openapi.util.IconLoader;
 

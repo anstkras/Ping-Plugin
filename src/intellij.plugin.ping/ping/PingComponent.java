@@ -1,7 +1,7 @@
-package ping;
+package intellij.plugin.ping.ping;
 
 import com.intellij.openapi.components.BaseComponent;
-import configurable.PingConfig;
+import intellij.plugin.ping.configurable.PingConfig;
 
 import java.util.concurrent.TimeUnit;
 
