@@ -10,7 +10,7 @@
                                  id="preferences.PingConfigurable"
                                  instance="intellij.plugin.ping.configurable.PingConfigurable"/>
         <applicationService serviceInterface="intellij.plugin.ping.configurable.PingConfig" serviceImplementation="intellij.plugin.ping.configurable.PingConfig"/>
-        <statusBarWidgetProvider implementation="intellij.plugin.ping.PingUI.PingStatusBarWidgetProvider"/>
+        <statusBarWidgetProvider implementation="intellij.plugin.ping.pingUI.PingStatusBarWidgetProvider"/>
 
     </extensions>
 
