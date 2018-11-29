@@ -10,8 +10,6 @@ import intellij.plugin.ping.ping.PingResultListener;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.TimeUnit;
@@ -74,12 +72,9 @@ public class PingConfigurableGUI {
             enabledCheckBox.setEnabled(true);
         }
 
-        enabledCheckBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setAllEnabled(enabledCheckBox.isSelected());
-                enabledCheckBox.setEnabled(true);
-            }
+        enabledCheckBox.addActionListener(e -> {
+            setAllEnabled(enabledCheckBox.isSelected());
+            enabledCheckBox.setEnabled(true);
         });
     }
 

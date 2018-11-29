@@ -11,7 +11,7 @@ public class PingComponent implements BaseComponent {
     private long timeFrequency;
     private TimeUnit timeUnit;
     private boolean pluginEnabled;
-    private CommandLinePing commandLinePing;
+    private final CommandLinePing commandLinePing;
 
     PingComponent() {
         config = PingConfig.getInstance();
