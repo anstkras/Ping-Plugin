@@ -8,7 +8,6 @@ import com.intellij.execution.process.ProcessEvent;
 import com.intellij.execution.process.ProcessHandler;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.util.Key;
-import intellij.plugin.ping.ping.PingResultListener;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -47,12 +46,21 @@ public class CommandLinePing {
     }
 
     public void restart() {
-        executor.shutdown();
+        stop();
         start();
     }
 
     public void start() {
         start(true);
+    }
+
+    public void stop() {
+        if (executor != null && !executor.isShutdown()) {
+            executor.shutdown();
+        }
+        for (PingResultListener listener : listeners) {
+            listener.onStop();
+        }
     }
 
     public void start(boolean repeat) {

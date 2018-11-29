@@ -22,6 +22,7 @@ public class PingConfig implements PersistentStateComponent<PingConfig> {
     private long mediumTime = 40;
     private long timeFrequency = 30;
     private TimeUnit timeUnit = TimeUnit.SECONDS;
+    private boolean isEnabled = false;
 
     @Nullable
     public static PingConfig getInstance() {
@@ -77,5 +78,13 @@ public class PingConfig implements PersistentStateComponent<PingConfig> {
 
     public void setTimeUnit(TimeUnit timeUnit) {
         this.timeUnit = timeUnit;
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
     }
 }

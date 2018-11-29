@@ -6,4 +6,6 @@ public interface PingResultListener extends EventListener {
     void onError(String message);
 
     void onMeasuredTime(long time);
+
+    void onStop();
 }

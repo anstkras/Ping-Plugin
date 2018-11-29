@@ -5,11 +5,11 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarWidget;
 import intellij.plugin.ping.configurable.PingConfig;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import intellij.plugin.ping.ping.CommandLinePing;
 import intellij.plugin.ping.ping.PingComponent;
 import intellij.plugin.ping.ping.PingResultListener;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
@@ -49,7 +49,7 @@ public class PingWidget implements StatusBarWidget {
 
     private void registerCustomListeners() {
         PingComponent pingComponent = ApplicationManager.getApplication().getComponent(PingComponent.class);
-        CommandLinePing commandLinePing = pingComponent.getCommandLinePing(); // TODO is install() invoked after initComponent()?
+        CommandLinePing commandLinePing = pingComponent.getCommandLinePing();
         commandLinePing.addListener(new PingResultListener() {
             @Override
             public void onError(String message) {
@@ -73,6 +73,11 @@ public class PingWidget implements StatusBarWidget {
                         updateIcon(RED_ICON);
                     }
                 }
+            }
+
+            @Override
+            public void onStop() {
+                updateIcon(GRAY_ICON);
             }
         });
     }

@@ -10,6 +10,7 @@ public class PingComponent implements BaseComponent {
     private String internetAddress;
     private long timeFrequency;
     private TimeUnit timeUnit;
+    private boolean pluginEnabled;
     private CommandLinePing commandLinePing;
 
     PingComponent() {
@@ -20,20 +21,27 @@ public class PingComponent implements BaseComponent {
     @Override
     public void initComponent() {
         getParameters();
-        commandLinePing.setParameters(internetAddress, timeFrequency, timeUnit);
-        commandLinePing.start();
+        if (pluginEnabled) {
+            commandLinePing.setParameters(internetAddress, timeFrequency, timeUnit);
+            commandLinePing.start();
+        }
     }
 
     public void updateParameters() {
         getParameters();
-        commandLinePing.setParameters(internetAddress, timeFrequency, timeUnit);
-        commandLinePing.restart();
+        if (pluginEnabled) {
+            commandLinePing.setParameters(internetAddress, timeFrequency, timeUnit);
+            commandLinePing.restart();
+        } else {
+            commandLinePing.stop();
+        }
     }
 
     private void getParameters() {
         internetAddress = config.getInternetAddress();
         timeFrequency = config.getTimeFrequency();
         timeUnit = config.getTimeUnit();
+        pluginEnabled = config.isEnabled();
     }
 
     public CommandLinePing getCommandLinePing() {

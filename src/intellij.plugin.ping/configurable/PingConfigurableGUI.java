@@ -10,6 +10,8 @@ import intellij.plugin.ping.ping.PingResultListener;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.TimeUnit;
@@ -23,6 +25,7 @@ public class PingConfigurableGUI {
     private JComboBox<TimeUnitRecord> timeUnitComboBox;
     private JButton testButton;
     private JTextArea testMessage;
+    private JCheckBox enabledCheckBox;
     private PingConfig config;
 
     public PingConfigurableGUI() {
@@ -64,6 +67,20 @@ public class PingConfigurableGUI {
                 testInternetAddress();
             }
         });
+
+        enabledCheckBox.setSelected(config.isEnabled());
+        if (!config.isEnabled()) {
+            setAllEnabled(false);
+            enabledCheckBox.setEnabled(true);
+        }
+
+        enabledCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setAllEnabled(enabledCheckBox.isSelected());
+                enabledCheckBox.setEnabled(true);
+            }
+        });
     }
 
     public JTextField getMediumTimeField() {
@@ -92,16 +109,21 @@ public class PingConfigurableGUI {
         modified |= !mediumTimeField.getText().equals(String.valueOf(config.getMediumTime()));
         modified |= !frequencyField.getText().equals(String.valueOf(config.getTimeFrequency()));
         modified |= ((TimeUnitRecord) timeUnitComboBox.getSelectedItem()).getTimeUnit() != config.getTimeUnit();
+        modified |= enabledCheckBox.isSelected() != config.isEnabled();
         return modified;
     }
 
     public void apply() throws ConfigurationException {
-        testTimes();
-        config.setInternetAddress(addressTextField.getText());
-        config.setFastTime(Integer.valueOf(fastTimeField.getText()));
-        config.setMediumTime(Integer.valueOf(mediumTimeField.getText()));
-        config.setTimeFrequency(Integer.valueOf(frequencyField.getText()));
-        config.setTimeUnit(((TimeUnitRecord) timeUnitComboBox.getSelectedItem()).getTimeUnit());
+        config.setEnabled(enabledCheckBox.isSelected());
+        if (enabledCheckBox.isSelected()) {
+            testTimes();
+
+            config.setInternetAddress(addressTextField.getText());
+            config.setFastTime(Integer.valueOf(fastTimeField.getText()));
+            config.setMediumTime(Integer.valueOf(mediumTimeField.getText()));
+            config.setTimeFrequency(Integer.valueOf(frequencyField.getText()));
+            config.setTimeUnit(((TimeUnitRecord) timeUnitComboBox.getSelectedItem()).getTimeUnit());
+        }
 
         ApplicationManager.getApplication().getComponent(PingComponent.class).updateParameters();
     }
@@ -112,6 +134,7 @@ public class PingConfigurableGUI {
         mediumTimeField.setText(String.valueOf(config.getMediumTime()));
         frequencyField.setText(String.valueOf(config.getTimeFrequency()));
         timeUnitComboBox.setSelectedItem(new TimeUnitRecord(config.getTimeUnit()));
+        enabledCheckBox.setSelected(config.isEnabled());
     }
 
     private void testInternetAddress() {
@@ -133,6 +156,10 @@ public class PingConfigurableGUI {
                 testMessage.setVisible(true);
                 testMessage.setText("Internet address is valid");
                 setAllEnabled(true);
+            }
+
+            @Override
+            public void onStop() {
             }
         });
     }
