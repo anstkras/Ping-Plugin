@@ -1,15 +1,23 @@
 <idea-plugin>
     <id>intellij.plugin.ping</id>
     <name>Ping Plugin</name>
-    <version>0.0.1</version>
-
+    <version>0.1</version>
+    <vendor email="anstkras@gmail.com" url="https://github.com/anstkras/Ping-Plugin">Anastasia K.</vendor>
     <depends>com.intellij.modules.lang</depends>
+
+    <description>
+        Shows the internet connection status obtained by launching ping utility
+        periodically. The server address, the maximum round-trip time and
+        the frequency of updating the internet connection status are
+        configurable.
+    </description>
 
     <extensions defaultExtensionNs="com.intellij">
         <applicationConfigurable groupId="tools" displayName="PingPlugin"
                                  id="preferences.PingConfigurable"
                                  instance="intellij.plugin.ping.configurable.PingConfigurable"/>
-        <applicationService serviceInterface="intellij.plugin.ping.configurable.PingConfig" serviceImplementation="intellij.plugin.ping.configurable.PingConfig"/>
+        <applicationService serviceInterface="intellij.plugin.ping.configurable.PingConfig"
+                            serviceImplementation="intellij.plugin.ping.configurable.PingConfig"/>
         <statusBarWidgetProvider implementation="intellij.plugin.ping.pingUI.PingStatusBarWidgetProvider"/>
 
     </extensions>
