@@ -166,9 +166,6 @@ public class PingConfigurableGUI {
         if (Long.valueOf(mediumTimeField.getText()) < Long.valueOf(fastTimeField.getText())) {
             throw new ConfigurationException("Fast time should be less than medium time");
         }
-        testMessage.setVisible(true);
-        testMessage.setForeground(JBColor.BLACK);
-        testMessage.setText("Everything is correct");
     }
 
     private void setAllEnabled(boolean enabled) {
