@@ -8,12 +8,12 @@ import java.util.regex.Pattern;
 
 public class PingAdapter {
     // pattern for 4 floating numbers separating by slashes
-    private static final Pattern LINUX_PATTERN = Pattern.compile("(\\d+(\\.\\d+)?)/(\\d+(\\.\\d+)?)/(\\d+(\\.\\d+)?)/(\\d+(\\.\\d+)?)");
-    private static final Pattern MAC_PATTERN = Pattern.compile("(\\d+(\\.\\d+)?)/(\\d+(\\.\\d+)?)/(\\d+(\\.\\d+)?)/(\\d+(\\.\\d+)?)");
+    private static final Pattern LINUX_PATTERN = Pattern.compile("(\\d+(\\.\\d+)?)\\/(\\d+(\\.\\d+)?)\\/(\\d+(\\.\\d+)?)\\/(\\d+(\\.\\d+)?)");
+    private static final Pattern MAC_PATTERN = Pattern.compile("(\\d+(\\.\\d+)?)\\/(\\d+(\\.\\d+)?)\\/(\\d+(\\.\\d+)?)\\/(\\d+(\\.\\d+)?)");
     private static final String ipv4Pattern = "(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])";
     private static final String ipv6Pattern = "([0-9a-f]{1,4}:){7}([0-9a-f]){1,4}";
-    private static final Pattern WIN_CHECK_PATTERN = Pattern.compile(".*(" + ipv4Pattern + "|" + ipv6Pattern + ")" + ".*\\d+.*\\d.*\\d");
-    private static final Pattern WIN_PATTERN = Pattern.compile("\\d+.*\\d+.*(\\d+)");
+    private static final Pattern WIN_CHECK_PATTERN = Pattern.compile(".*(" + ipv4Pattern + "|" + ipv6Pattern + ")" + "[^\\d]*\\d+[^\\d]*\\d+[^\\d]*\\d+");
+    private static final Pattern WIN_PATTERN = Pattern.compile("\\d+[^\\d]*\\d+[^\\d]*(\\d+)[^\\d]+");
     private static final int pingCount = 4;
     private static String stringPingCount = String.valueOf(pingCount);
 
@@ -30,7 +30,7 @@ public class PingAdapter {
             return new GeneralCommandLine("ping", "-n", stringPingCount, internetAddress);
         }
 
-        return null;
+        throw new IllegalStateException("Unsupported OS");
     }
 
     public static long timeMeasured(String pingOutput) throws IllegalStateException {
@@ -38,15 +38,15 @@ public class PingAdapter {
         try {
             if (SystemInfo.isLinux) {
                 Matcher matcher = LINUX_PATTERN.matcher(strings[strings.length - 1]);
-                if (matcher.group(2) != null) {
-                    long time = (long) Double.parseDouble(matcher.group(2));
+                if (matcher.find() && matcher.group(3) != null) {
+                    long time = (long) Double.parseDouble(matcher.group(3));
                     return time;
                 }
             }
             if (SystemInfo.isMac) {
                 Matcher matcher = MAC_PATTERN.matcher(strings[strings.length - 1]);
-                if (matcher.group(2) != null) {
-                    long time = (long) Double.parseDouble(matcher.group(2));
+                if (matcher.find() && matcher.group(3) != null) {
+                    long time = (long) Double.parseDouble(matcher.group(3));
                     return time;
                 }
             }
@@ -57,12 +57,12 @@ public class PingAdapter {
                         count++;
                     }
                 }
-                if (count < pingCount) {
+                if (count != pingCount) {
                     throw new IllegalStateException("average time has not been found in string: " + pingOutput);
                 }
                 Matcher matcher = WIN_PATTERN.matcher(strings[strings.length - 1]);
-                if (matcher.group(3) != null) {
-                    long time = (long) Double.parseDouble(matcher.group(3));
+                if (matcher.find() && matcher.group(1) != null) {
+                    long time = (long) Double.parseDouble(matcher.group(1));
                     return time;
                 }
             }
