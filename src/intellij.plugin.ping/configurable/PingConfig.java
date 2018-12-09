@@ -16,7 +16,6 @@ import java.util.concurrent.TimeUnit;
                 @Storage("other.xml")}
 )
 public class PingConfig implements PersistentStateComponent<PingConfig> {
-    // TODO is this a valid way to set default values?
     private String internetAddress = "google.com";
     private long fastTime = 20;
     private long mediumTime = 40;

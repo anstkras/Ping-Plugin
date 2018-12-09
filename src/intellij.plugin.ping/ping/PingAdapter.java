@@ -6,7 +6,7 @@ import com.intellij.openapi.util.SystemInfo;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PingAdapter {
+class PingAdapter {
     // pattern for 4 floating numbers separating by slashes
     private static final Pattern LINUX_PATTERN = Pattern.compile("(\\d+(\\.\\d+)?)\\/(\\d+(\\.\\d+)?)\\/(\\d+(\\.\\d+)?)\\/(\\d+(\\.\\d+)?)");
     private static final Pattern MAC_PATTERN = Pattern.compile("(\\d+(\\.\\d+)?)\\/(\\d+(\\.\\d+)?)\\/(\\d+(\\.\\d+)?)\\/(\\d+(\\.\\d+)?)");
@@ -15,9 +15,9 @@ public class PingAdapter {
     private static final Pattern WIN_CHECK_PATTERN = Pattern.compile(".*(" + ipv4Pattern + "|" + ipv6Pattern + ")" + "[^\\d]*\\d+[^\\d]*\\d+[^\\d]*\\d+");
     private static final Pattern WIN_PATTERN = Pattern.compile("\\d+[^\\d]*\\d+[^\\d]*(\\d+)[^\\d]+");
     private static final int pingCount = 4;
-    private static String stringPingCount = String.valueOf(pingCount);
+    private static final String stringPingCount = String.valueOf(pingCount);
 
-    public static GeneralCommandLine getGeneralCommandLine(String internetAddress) {
+    static GeneralCommandLine getGeneralCommandLine(String internetAddress) {
         if (SystemInfo.isLinux) {
             return new GeneralCommandLine("ping", "-c", stringPingCount, internetAddress);
         }
@@ -33,7 +33,7 @@ public class PingAdapter {
         throw new IllegalStateException("unsupported OS");
     }
 
-    public static long timeMeasured(String pingOutput) throws IllegalStateException {
+    static long timeMeasured(String pingOutput) throws IllegalStateException {
         String[] strings = pingOutput.split("[\r\n]+");
         if (strings.length < 1) {
             throw new IllegalStateException("average time has not been found in string: " + pingOutput);

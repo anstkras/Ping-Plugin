@@ -15,14 +15,14 @@ import javax.swing.*;
 
 import static intellij.plugin.ping.icons.PingPluginsIcons.*;
 
-public class PingWidget implements StatusBarWidget {
+class PingWidget implements StatusBarWidget {
     private final PingPresentation pingPresentation;
     private final Logger logger = Logger.getInstance(PingWidget.class);
     private StatusBar statusBar;
     private PingResultListener pingResultListener;
 
     public PingWidget() {
-        this.pingPresentation = new PingPresentation(this);
+        this.pingPresentation = new PingPresentation();
     }
 
     @NotNull

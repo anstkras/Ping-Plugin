@@ -14,7 +14,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.TimeUnit;
 
-public class PingConfigurableGUI {
+class PingConfigurableGUI {
     private JPanel rootPanel;
     private JTextField addressTextField;
     private IntegerField fastTimeField;

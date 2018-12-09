@@ -28,10 +28,6 @@ public class CommandLinePing {
     public CommandLinePing() {
     }
 
-    protected CommandLinePing(String internetAddress, long timeFrequency, TimeUnit timeUnit) {
-        setParameters(internetAddress, timeFrequency, timeUnit);
-    }
-
     public void setParameters(String internetAddress, long timeFrequency, TimeUnit timeUnit) {
         this.internetAddress = internetAddress;
         this.timeFrequency = timeFrequency;

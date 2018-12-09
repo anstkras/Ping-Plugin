@@ -10,12 +10,10 @@ import java.awt.event.MouseEvent;
 
 import static intellij.plugin.ping.icons.PingPluginsIcons.GRAY_ICON;
 
-public class PingPresentation implements StatusBarWidget.IconPresentation {
-    private final PingWidget widget;
+class PingPresentation implements StatusBarWidget.IconPresentation {
     private Icon icon = GRAY_ICON;
 
-    public PingPresentation(PingWidget pingWidget) {
-        this.widget = pingWidget;
+    public PingPresentation() {
     }
 
     @NotNull
@@ -37,9 +35,6 @@ public class PingPresentation implements StatusBarWidget.IconPresentation {
     @Nullable
     @Override
     public Consumer<MouseEvent> getClickConsumer() {
-        return mouseEvent -> {
-            if (mouseEvent.getID() == MouseEvent.MOUSE_PRESSED) {
-            }
-        };
+        return null;
     }
 }
