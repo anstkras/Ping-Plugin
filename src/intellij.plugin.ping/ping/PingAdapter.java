@@ -10,9 +10,9 @@ class PingAdapter {
     // pattern for 4 floating numbers separating by slashes
     private static final Pattern LINUX_PATTERN = Pattern.compile("(\\d+(\\.\\d+)?)\\/(\\d+(\\.\\d+)?)\\/(\\d+(\\.\\d+)?)\\/(\\d+(\\.\\d+)?)");
     private static final Pattern MAC_PATTERN = Pattern.compile("(\\d+(\\.\\d+)?)\\/(\\d+(\\.\\d+)?)\\/(\\d+(\\.\\d+)?)\\/(\\d+(\\.\\d+)?)");
-    private static final String ipv4Pattern = "(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])";
-    private static final String ipv6Pattern = "([0-9a-f]{1,4}:){7}([0-9a-f]){1,4}";
-    private static final Pattern WIN_CHECK_PATTERN = Pattern.compile(".*(" + ipv4Pattern + "|" + ipv6Pattern + ")" + "[^\\d]*\\d+[^\\d]*\\d+[^\\d]*\\d+");
+    private static final String IPV_4_PATTERN = "(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])";
+    private static final String IPV_6_PATTERN = "([0-9a-f]{1,4}:){7}([0-9a-f]){1,4}";
+    private static final Pattern WIN_CHECK_PATTERN = Pattern.compile(".*(" + IPV_4_PATTERN + "|" + IPV_6_PATTERN + ")" + "[^\\d]*\\d+[^\\d]*\\d+[^\\d]*\\d+");
     private static final Pattern WIN_PATTERN = Pattern.compile("\\d+[^\\d]*\\d+[^\\d]*(\\d+)[^\\d]+");
     private static final int pingCount = 4;
     private static final String stringPingCount = String.valueOf(pingCount);
