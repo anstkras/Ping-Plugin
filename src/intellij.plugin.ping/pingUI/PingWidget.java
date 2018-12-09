@@ -19,6 +19,7 @@ public class PingWidget implements StatusBarWidget {
     private final PingPresentation pingPresentation;
     private final Logger logger = Logger.getInstance(PingWidget.class);
     private StatusBar statusBar;
+    private PingResultListener pingResultListener;
 
     public PingWidget() {
         this.pingPresentation = new PingPresentation(this);
@@ -44,13 +45,15 @@ public class PingWidget implements StatusBarWidget {
 
     @Override
     public void dispose() {
-
+        PingComponent pingComponent = ApplicationManager.getApplication().getComponent(PingComponent.class);
+        CommandLinePing commandLinePing = pingComponent.getCommandLinePing();
+        commandLinePing.removeListener(pingResultListener);
     }
 
     private void registerCustomListeners() {
         PingComponent pingComponent = ApplicationManager.getApplication().getComponent(PingComponent.class);
         CommandLinePing commandLinePing = pingComponent.getCommandLinePing();
-        commandLinePing.addListener(new PingResultListener() {
+        pingResultListener = new PingResultListener() {
             @Override
             public void onError(String message) {
                 updateIcon(RED_ICON);
@@ -61,8 +64,7 @@ public class PingWidget implements StatusBarWidget {
                 PingConfig config = PingConfig.getInstance();
                 if (config == null) {
                     logger.info("ping config is null");
-                }
-                else {
+                } else {
                     long fastTime = config.getFastTime();
                     long mediumTime = config.getMediumTime();
                     if (time <= fastTime) {
@@ -79,7 +81,8 @@ public class PingWidget implements StatusBarWidget {
             public void onStop() {
                 updateIcon(GRAY_ICON);
             }
-        });
+        };
+        commandLinePing.addListener(pingResultListener);
     }
 
     private void updateIcon(Icon icon) {
