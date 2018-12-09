@@ -30,11 +30,14 @@ public class PingAdapter {
             return new GeneralCommandLine("ping", "-n", stringPingCount, internetAddress);
         }
 
-        throw new IllegalStateException("Unsupported OS");
+        throw new IllegalStateException("unsupported OS");
     }
 
     public static long timeMeasured(String pingOutput) throws IllegalStateException {
         String[] strings = pingOutput.split("[\r\n]+");
+        if (strings.length < 1) {
+            throw new IllegalStateException("average time has not been found in string: " + pingOutput);
+        }
         try {
             if (SystemInfo.isLinux) {
                 Matcher matcher = LINUX_PATTERN.matcher(strings[strings.length - 1]);
@@ -69,6 +72,6 @@ public class PingAdapter {
         } catch (Exception e) {
             throw new IllegalStateException("average time has not been found in string: " + pingOutput);
         }
-        throw new IllegalStateException("Unsupported OS");
+        throw new IllegalStateException("unsupported OS");
     }
 }
