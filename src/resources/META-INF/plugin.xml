@@ -14,7 +14,7 @@
     </description>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationConfigurable groupId="tools" displayName="PingPlugin"
+        <applicationConfigurable groupId="tools" displayName="Ping Plugin"
                                  id="preferences.PingConfigurable"
                                  instance="intellij.plugin.ping.configurable.PingConfigurable"/>
         <applicationService serviceInterface="intellij.plugin.ping.configurable.PingConfig"
