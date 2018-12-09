@@ -89,6 +89,9 @@ public class CommandLinePing {
                             }
                         } catch (Exception e) {
                             logger.info(e.getMessage());
+                            for (PingResultListener listener : listeners) {
+                                listener.onError(pingOutput);
+                            }
                         }
                     }
                 }
