@@ -60,9 +60,11 @@ class PingConfigurableGUI {
         testButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                setAllEnabled(false);
-                testInternetAddress();
+                if (enabledCheckBox.isSelected()) {
+                    super.mouseClicked(e);
+                    setAllEnabled(false);
+                    testInternetAddress();
+                }
             }
         });
 
