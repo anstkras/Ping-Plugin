@@ -3,8 +3,8 @@
     <name>Ping Plugin</name>
     <version>0.1</version>
     <vendor email="anstkras@gmail.com" url="https://github.com/anstkras/Ping-Plugin">Anastasia K.</vendor>
-    <depends>com.intellij.modules.lang</depends>
-    <idea-version since-build="182.1" until-build="183.*"/>
+    <depends>com.intellij.modules.platform</depends>
+    <idea-version since-build="182.4"/>
 
     <description>
         Shows the internet connection status obtained by launching ping utility

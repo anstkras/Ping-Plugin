@@ -22,10 +22,6 @@ sourceSets {
     }
 }
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-}
-
 intellij {
     version '2018.2.3'
     intellij.updateSinceUntilBuild false
