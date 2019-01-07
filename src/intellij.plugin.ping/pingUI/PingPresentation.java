@@ -29,7 +29,7 @@ class PingPresentation implements StatusBarWidget.IconPresentation {
     @Nullable
     @Override
     public String getTooltipText() {
-        return "Ping Plugin";
+        return "Ping Test";
     }
 
     @Nullable

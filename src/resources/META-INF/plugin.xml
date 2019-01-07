@@ -1,6 +1,6 @@
 <idea-plugin>
     <id>intellij.plugin.ping</id>
-    <name>Ping Plugin</name>
+    <name>Ping Test</name>
     <version>0.1</version>
     <vendor email="anstkras@gmail.com" url="https://github.com/anstkras/Ping-Plugin">Anastasia K.</vendor>
     <depends>com.intellij.modules.platform</depends>
@@ -14,7 +14,7 @@
     </description>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationConfigurable groupId="tools" displayName="Ping Plugin"
+        <applicationConfigurable groupId="tools" displayName="Ping Test"
                                  id="preferences.PingConfigurable"
                                  instance="intellij.plugin.ping.configurable.PingConfigurable"/>
         <applicationService serviceInterface="intellij.plugin.ping.configurable.PingConfig"
