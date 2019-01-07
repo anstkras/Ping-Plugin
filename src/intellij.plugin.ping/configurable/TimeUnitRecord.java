@@ -11,7 +11,7 @@ class TimeUnitRecord {
         this.timeUnit = timeUnit;
     }
 
-    TimeUnit getTimeUnit() {
+    public TimeUnit getTimeUnit() {
         return timeUnit;
     }
 
