@@ -58,9 +58,10 @@ public class CommandLinePing {
 
     public void start(boolean repeat) {
         Runnable runPing = () -> {
+            PingAdapter pingAdapter = PingAdapter.getPingAdapter();
             ProcessHandler processHandler = null;
             try {
-                processHandler = new OSProcessHandler(PingAdapter.getGeneralCommandLine(internetAddress));
+                processHandler = new OSProcessHandler(pingAdapter.getGeneralCommandLine(internetAddress));
             } catch (ExecutionException e) {
                 logger.info(e.getMessage());
             }
@@ -78,7 +79,7 @@ public class CommandLinePing {
                         }
                     } else {
                         try {
-                            long time = PingAdapter.timeMeasured(pingOutput);
+                            long time = pingAdapter.timeMeasured(pingOutput);
                             logger.info("rtt time: " + String.valueOf(time));
                             for (PingResultListener listener : listeners) {
                                 listener.onMeasuredTime(time);
